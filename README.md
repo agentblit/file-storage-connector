@@ -74,3 +74,27 @@ pnpm dev
 docker build --platform linux/amd64 -t registry.agentblit.com/file-storage-connector:latest .
 docker push registry.agentblit.com/file-storage-connector:latest
 ```
+
+## Production deploy
+
+Same flow as appointment-tool. Manifests live in `infra/prod/internal/tools/`.
+
+```bash
+# 1. Secrets (once)
+cp infra/prod/internal/tools/file-storage-connector-secret.example.yaml \
+   infra/prod/internal/tools/file-storage-connector-secret.yaml
+# fill BETTER_AUTH_SECRET, POSTGRES_PASSWORD, DATABASE_URL, AWS_*
+
+kubectl apply -f infra/prod/internal/tools/file-storage-connector-secret.yaml
+kubectl apply -f infra/prod/internal/tools/file-storage-connector.yaml
+
+# 2. Image
+cd file-storage-connector
+docker build --platform linux/amd64 -t registry.agentblit.com/file-storage-connector:latest .
+docker push registry.agentblit.com/file-storage-connector:latest
+kubectl rollout restart deployment/file-storage-connector -n internal
+kubectl rollout status deployment/file-storage-connector -n internal
+```
+
+Public URL: `https://file-storage-connector.agentblit.com`  
+Health: `https://file-storage-connector.agentblit.com/api/health`
