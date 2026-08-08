@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-placeholder-foreground: var(--placeholder-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-code-block-bg: var(--code-block-bg);
+  --color-code-block-foreground: var(--code-block-foreground);
+  --radius-base: var(--radius);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
+  --placeholder-foreground: color-mix(
+    in oklab,
+    var(--muted-foreground) 45%,
+    var(--background)
+  );
+  --primary: #0f766e;
+  --primary-foreground: #ffffff;
+  --primary-soft: #ccfbf1;
+  --destructive: #dc2626;
+  --success: #059669;
+  --warning: #d97706;
+  --info: #0284c7;
+  --border: #e2e8f0;
+  --ring: #5eead4;
+  --code-block-bg: #0f172a;
+  --code-block-foreground: #e2e8f0;
+  --radius: 14px;
+}
+
+.dark {
+  --background: #0a0a0b;
+  --foreground: #e2e8f0;
+  --card: #0e0e17;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --primary: #2dd4bf;
+  --primary-foreground: #0a0a0b;
+  --primary-soft: #134e4a;
+  --destructive: #f87171;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --info: #38bdf8;
+  --border: #334155;
+  --ring: #2dd4bf;
+  --code-block-bg: #0b1220;
+  --code-block-foreground: #f1f5f9;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder-foreground);
+  opacity: 1;
+}
