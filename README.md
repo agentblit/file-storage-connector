@@ -77,7 +77,7 @@ docker push registry.agentblit.com/file-storage-connector:latest
 
 ## Production deploy
 
-Same flow as appointment-tool. Manifests live in `infra/prod/internal/tools/`.
+Same flow as appointment-connector. Manifests live in `infra/prod/internal/tools/`.
 
 ```bash
 # 1. Secrets (once)
