@@ -2,6 +2,7 @@ import { config as loadEnv } from "dotenv";
 import { resolve } from "node:path";
 import { betterAuth } from "better-auth";
 import { getMigrations } from "better-auth/db/migration";
+import { genericOAuth } from "better-auth/plugins";
 import { Pool } from "pg";
 
 const cwd = process.cwd();
@@ -25,10 +26,20 @@ const auth = betterAuth({
   baseURL: process.env.PUBLIC_BASE_URL,
   secret: process.env.BETTER_AUTH_SECRET ?? "migrate-placeholder-secret",
   database: pool,
-  emailAndPassword: {
-    enabled: true,
-    minPasswordLength: 8,
-  },
+  plugins: [
+    genericOAuth({
+      config: [
+        {
+          providerId: "agentblit",
+          clientId: "migrate-placeholder",
+          clientSecret: "migrate-placeholder",
+          authorizationUrl: "https://example.com/authorize",
+          tokenUrl: "https://example.com/token",
+          userInfoUrl: "https://example.com/userinfo",
+        },
+      ],
+    }),
+  ],
 });
 
 const { toBeCreated, toBeAdded, runMigrations } = await getMigrations(

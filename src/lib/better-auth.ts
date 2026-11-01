@@ -1,6 +1,8 @@
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
+import { genericOAuth } from "better-auth/plugins";
 import { Pool } from "pg";
+import { agentblitOAuthConfig } from "@/lib/agentblit-oauth";
 
 const pool = new Pool({
   connectionString:
@@ -12,24 +14,13 @@ export const auth = betterAuth({
   baseURL: process.env.PUBLIC_BASE_URL,
   secret: process.env.BETTER_AUTH_SECRET,
   database: pool,
-  emailAndPassword: {
-    enabled: true,
-    minPasswordLength: 8,
-  },
   advanced: {
     cookiePrefix: "file-storage-connector",
   },
-  databaseHooks: {
-    user: {
-      create: {
-        after: async (user) => {
-          await pool.query(
-            `UPDATE auth."user" SET "emailVerified" = true WHERE id = $1`,
-            [user.id],
-          );
-        },
-      },
-    },
-  },
-  plugins: [nextCookies()],
+  plugins: [
+    genericOAuth({
+      config: [agentblitOAuthConfig()],
+    }),
+    nextCookies(),
+  ],
 });

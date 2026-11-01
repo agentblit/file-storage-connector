@@ -4,6 +4,7 @@ import {
   Suspense,
   useCallback,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -117,6 +118,7 @@ function DashboardContent() {
 
   const { data: session, isPending: sessionPending } = authClient.useSession();
   const isAuthenticated = Boolean(session?.user);
+  const signingOutRef = useRef(false);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -182,7 +184,7 @@ function DashboardContent() {
   }, []);
 
   useEffect(() => {
-    if (sessionPending) return;
+    if (sessionPending || signingOutRef.current) return;
     if (!isAuthenticated) {
       router.replace("/login?next=/");
       return;
@@ -279,7 +281,12 @@ function DashboardContent() {
   }
 
   async function onSignOut() {
-    await authClient.signOut();
+    signingOutRef.current = true;
+    const { data } = await authClient.signOut({ disableRedirect: true });
+    if (data?.url) {
+      window.location.assign(data.url);
+      return;
+    }
     router.replace("/login");
   }
 
