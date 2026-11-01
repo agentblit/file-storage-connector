@@ -7,8 +7,15 @@ export const AGENTBLIT_PROVIDER_ID = "agentblit";
 
 function requireEnv(name: string): string {
   const value = process.env[name]?.trim();
-  if (!value) throw new Error(`${name} is not set`);
-  return value.replace(/\/$/, "");
+  if (value) return value.replace(/\/$/, "");
+  // `next build` imports auth while collecting page data; allow placeholders then.
+  if (
+    process.env.NEXT_PHASE === "phase-production-build" ||
+    process.env.npm_lifecycle_event === "build"
+  ) {
+    return `https://build-placeholder.invalid/${name}`;
+  }
+  throw new Error(`${name} is not set`);
 }
 
 export function agentblitOAuthConfig() {
