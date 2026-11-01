@@ -26,6 +26,6 @@ export function agentblitOAuthConfig() {
     clientId: requireEnv("AGENTBLIT_CLIENT_ID"),
     clientSecret: requireEnv("AGENTBLIT_CLIENT_SECRET"),
     scopes: ["openid", "profile", "email"],
-    postLogoutRedirectURI: `${requireEnv("PUBLIC_BASE_URL")}/`,
+    postLogoutRedirectURI: `${requireEnv("PUBLIC_BASE_URL")}/login`,
   };
 }

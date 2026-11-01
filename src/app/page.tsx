@@ -186,7 +186,7 @@ function DashboardContent() {
   useEffect(() => {
     if (sessionPending || signingOutRef.current) return;
     if (!isAuthenticated) {
-      router.replace("/login?next=/");
+      window.location.assign("/login?next=/");
       return;
     }
     void loadWorkspace();
@@ -287,7 +287,7 @@ function DashboardContent() {
       window.location.assign(data.url);
       return;
     }
-    router.replace("/login");
+    window.location.assign("/login");
   }
 
   if (sessionPending || !isAuthenticated) {
